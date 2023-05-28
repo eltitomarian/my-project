@@ -1,8 +1,7 @@
-FROM openjdk:8-jre-alpine
+FROM alpine:latest
 
-EXPOSE 8080
+RUN mkdir /app
+WORKDIR /app
 
-COPY ./build/libs/my-app-1.0-SNAPSHOT.jar /usr/app/
-WORKDIR /usr/app
-
-ENTRYPOINT ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]
+LABEL maintainer="eltitomarian <inbox.otros@gmail.com>" \
+      version="1.0"

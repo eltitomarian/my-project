@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ development ]
+  workflow_dispatch:
+    inputs:
+      build-or-tag-release:
+        required: false
+        type: string
+        description: 'Choose if you want Integration + Tag + Release or just Integration'
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build & Push Image
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        docker image build -t eltitomarian/test-uax:latest .
+        docker push eltitomarian/test-uax:latest
+    - name: Print Success
+      shell: bash
+      run: | 
+        echo 'La integración continua con Docker-Hub ha sido un éxito'
+        echo 'Debemos de continuar con el workflow de ci-rl'
